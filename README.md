@@ -21,7 +21,7 @@ This repository ships only those two tools, with measurable before/after reports
 ```bash
 pip install -e .
 skill-lint path/to/skill-or-directory
-skill-collision --local path/to/skills --index public
+skill-collision --local path/to/skills
 ```
 
 ## Design rules
@@ -29,13 +29,13 @@ skill-collision --local path/to/skills --index public
 - Zero dependency on any single agent runtime beyond standard Python.
 - Output is always machine-readable JSON + human summary.
 - Every check ships with at least one reproducible test case (n≥5 where applicable).
-- Attribution: any code derived from Anthropic skill-creator patterns carries explicit notice.
+- Attribution: any code derived from Anthropic skill-creator patterns carries explicit notice (see NOTICE).
 
 ## Status
 
 - [x] Repository scaffold
-- [ ] Collision Detector v0.1
-- [ ] Security Lint v0.1
+- [x] Collision Detector v0.1 (exact name + Jaccard description)
+- [x] Security Lint v0.1 (name/description rules + dangerous patterns)
 - [ ] Benchmark suite (n≥5)
 - [ ] Public before/after report
 
