@@ -10,8 +10,15 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 def test_scans_valid_skills():
     result = detect_collisions(FIXTURES)
-    assert result["scanned"] >= 1
+    assert result["scanned"] >= 5, f"expected ≥5 fixtures, got {result['scanned']}"
     assert isinstance(result["collisions"], list)
+
+
+def test_planted_description_overlap_detected():
+    result = detect_collisions(FIXTURES)
+    pairs = {(c["a"], c["b"]) for c in result["collisions"] if c["type"] == "description-overlap"}
+    # collision-a and collision-b were designed to share high token overlap
+    assert ("collision-a", "collision-b") in pairs or ("collision-b", "collision-a") in pairs
 
 
 def test_exact_name_collision(tmp_path: Path):
