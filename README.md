@@ -24,6 +24,8 @@ skill-lint path/to/skill-or-directory
 skill-collision --local path/to/skills
 ```
 
+The Project Engineering Constitution that governs continuous improvement lives in [`AGENTS.md`](./AGENTS.md).
+
 ## Design rules
 
 - Zero dependency on any single agent runtime beyond standard Python.
@@ -36,6 +38,7 @@ skill-collision --local path/to/skills
 - [x] Repository scaffold
 - [x] Collision Detector v0.1 (exact name + Jaccard description)
 - [x] Security Lint v0.1 (name/description rules + dangerous patterns)
+- [x] Regression tests + CI (3.10–3.12)
 - [ ] Benchmark suite (n≥5)
 - [ ] Public before/after report
 

@@ -21,19 +21,20 @@ def _jaccard(a: set[str], b: set[str]) -> float:
 
 
 def _load_meta(skill_dir: Path) -> dict[str, Any] | None:
+    """Load frontmatter. Returns None on missing file; raises-like via special key on parse error."""
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.exists():
         return None
     text = skill_md.read_text(encoding="utf-8")
     if not text.startswith("---"):
-        return None
+        return {"_dir": skill_dir.name, "_error": "no frontmatter"}
     parts = text.split("---", 2)
     if len(parts) < 3:
-        return None
+        return {"_dir": skill_dir.name, "_error": "malformed frontmatter"}
     try:
         meta = yaml.safe_load(parts[1]) or {}
-    except yaml.YAMLError:
-        return None
+    except yaml.YAMLError as exc:
+        return {"_dir": skill_dir.name, "_error": f"yaml: {exc}"}
     meta["_dir"] = skill_dir.name
     return meta
 
@@ -41,10 +42,16 @@ def _load_meta(skill_dir: Path) -> dict[str, Any] | None:
 def detect_collisions(root: Path, jaccard_threshold: float = 0.55) -> dict[str, Any]:
     root = root.resolve()
     skills: list[dict[str, Any]] = []
+    parse_errors: list[dict[str, Any]] = []
     for child in sorted(root.iterdir()):
         if child.is_dir():
             meta = _load_meta(child)
-            if meta and meta.get("name"):
+            if not meta:
+                continue
+            if meta.get("_error"):
+                parse_errors.append({"dir": meta["_dir"], "error": meta["_error"]})
+                continue
+            if meta.get("name"):
                 skills.append(meta)
 
     collisions: list[dict[str, Any]] = []
@@ -75,4 +82,4 @@ def detect_collisions(root: Path, jaccard_threshold: float = 0.55) -> dict[str, 
                     "detail": f"Jaccard={score:.2f}",
                 })
 
-    return {"scanned": len(skills), "collisions": collisions}
+    return {"scanned": len(skills), "collisions": collisions, "parse_errors": parse_errors}
