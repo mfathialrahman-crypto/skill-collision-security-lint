@@ -68,7 +68,7 @@ def lint_skill_md(path: Path) -> list[dict[str, Any]]:
             results.append({"check": "description-type", "ok": False, "message": "description must be string"})
         else:
             if len(desc) > MAX_DESC_LEN:
-                results.append({"check": "description-length", "ok": False, "message": f">{len={len(desc)} > {MAX_DESC_LEN}"})
+                results.append({"check": "description-length", "ok": False, "message": f"len={len(desc)} > {MAX_DESC_LEN}"})
             else:
                 results.append({"check": "description-length", "ok": True, "message": f"len={len(desc)}"})
             for bad in FORBIDDEN_IN_DESC:
