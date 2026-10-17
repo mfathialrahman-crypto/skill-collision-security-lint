@@ -1,0 +1,14 @@
+NOTICE
+
+This project implements independent Collision Detector and Security Lint tools
+for Agent Skills.
+
+Frontmatter validation rules (name format, description length, prohibition of
+colon-space and angle brackets) are derived from the publicly documented
+constraints of the Agent Skills specification and the skill-creator skill
+published by Anthropic at https://github.com/anthropics/skills.
+
+No substantial copyrighted text from Anthropic repositories is reproduced.
+This project is not affiliated with, endorsed by, or sponsored by Anthropic.
+
+Apache-2.0 applies to all original code in this repository.
