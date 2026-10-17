@@ -39,8 +39,10 @@ The Project Engineering Constitution that governs continuous improvement lives i
 - [x] Collision Detector v0.1 (exact name + Jaccard description)
 - [x] Security Lint v0.1 (name/description rules + dangerous patterns)
 - [x] Regression tests + CI (3.10–3.12)
-- [ ] Benchmark suite (n≥5)
-- [ ] Public before/after report
+- [x] Benchmark suite (n=6 fixtures)
+- [x] Public before/after report → [docs/benchmark-v0.1.md](docs/benchmark-v0.1.md)
+
+**Baseline metrics (v0.1):** Lint true-positive 100%, false-positive 0%. Collision recall on planted pair 100%.
 
 ## License
 
