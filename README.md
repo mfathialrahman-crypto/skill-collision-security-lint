@@ -37,7 +37,7 @@ The Project Engineering Constitution that governs continuous improvement lives i
 
 - [x] Repository scaffold
 - [x] Collision Detector v0.1 (exact name + Jaccard description)
-- [x] Security Lint v0.1 (name/description rules + dangerous patterns)
+- [x] Security Lint v0.1.1 (name/description rules + expanded dangerous patterns: eval/exec/subprocess/rm/curl|sh/pickle/unsafe-yaml/base64)
 - [x] Regression tests + CI (3.10–3.12)
 - [x] Benchmark suite (n=6 fixtures)
 - [x] Public before/after report → [docs/benchmark-v0.1.md](docs/benchmark-v0.1.md)

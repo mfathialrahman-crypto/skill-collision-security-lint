@@ -21,6 +21,10 @@ DANGEROUS_PATTERNS = [
     (r"(?i)subprocess\.(call|run|Popen)", "subprocess invocation"),
     (r"(?i)rm\s+-rf", "destructive rm -rf"),
     (r"(?i)curl\s+.*\|\s*(ba)?sh", "curl | sh pattern"),
+    (r"(?i)pickle\.loads\s*\(", "pickle.loads (RCE risk)"),
+    (r"(?i)yaml\.load\s*\([^)]*Loader\s*=\s*yaml\.Loader", "unsafe yaml.load"),
+    (r"(?i)yaml\.load\s*\((?!.*SafeLoader)", "yaml.load without SafeLoader"),
+    (r"(?i)base64\.b64decode\s*\(", "base64 decode (possible obfuscation)"),
 ]
 
 

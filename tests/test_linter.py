@@ -28,3 +28,11 @@ def test_description_length_message_is_valid():
     length = next(r for r in results if r["check"] == "description-length")
     assert length["ok"] is True
     assert "len=" in length["message"]
+
+def test_unsafe_patterns_detected():
+    results = lint_path(FIXTURES / "unsafe-skill")
+    fails = {r["check"] for r in results if not r["ok"]}
+    assert any("pickle.loads" in r["check"] and not r["ok"] for r in results)
+    assert any("base64" in r["check"] and not r["ok"] for r in results)
+    # yaml.load without SafeLoader should be flagged
+    assert any("yaml.load" in r["check"] and not r["ok"] for r in results)
