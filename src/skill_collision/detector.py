@@ -5,11 +5,14 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+import re
 import yaml
 
 
 def _tokens(text: str) -> set[str]:
-    return {t.lower() for t in text.replace("-", " ").split() if len(t) > 2}
+    """Tokenize for Jaccard. Strips punctuation and hyphens so 'json.' == 'json'."""
+    cleaned = re.sub(r"[^\w\s]", " ", text.lower().replace("-", " "))
+    return {t for t in cleaned.split() if len(t) > 2}
 
 
 def _jaccard(a: set[str], b: set[str]) -> float:
