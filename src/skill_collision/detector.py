@@ -1,4 +1,4 @@
-"""Detect collisions between skill names and descriptions."""
+"""Detect collisions between skill names, descriptions, and trigger phrases."""
 
 from __future__ import annotations
 
@@ -23,6 +23,31 @@ def _jaccard(a: set[str], b: set[str]) -> float:
     return inter / union if union else 0.0
 
 
+def _extract_triggers(description: str) -> str:
+    """Extract activation / trigger-oriented phrases from a description.
+
+    Captures clauses that typically control when a skill fires
+    (e.g. 'Use when the user...', 'Triggers on...', 'when the user needs...').
+    """
+    if not description or not isinstance(description, str):
+        return ""
+    patterns = [
+        r"(?i)(?:use\s+(?:when|for|to)|when\s+the\s+user|triggers?\s+(?:on|when|for)|activation\s+(?:phrase|on|when))[^.]*\.?",
+    ]
+    found: list[str] = []
+    for p in patterns:
+        found.extend(re.findall(p, description))
+    # Deduplicate while preserving order and join
+    seen = set()
+    unique = []
+    for phrase in found:
+        key = phrase.strip().lower()
+        if key and key not in seen:
+            seen.add(key)
+            unique.append(phrase.strip())
+    return " ".join(unique)
+
+
 def _load_meta(skill_dir: Path) -> dict[str, Any] | None:
     """Load frontmatter. Returns None on missing file; raises-like via special key on parse error."""
     skill_md = skill_dir / "SKILL.md"
@@ -42,7 +67,11 @@ def _load_meta(skill_dir: Path) -> dict[str, Any] | None:
     return meta
 
 
-def detect_collisions(root: Path, jaccard_threshold: float = 0.55) -> dict[str, Any]:
+def detect_collisions(
+    root: Path,
+    jaccard_threshold: float = 0.55,
+    trigger_threshold: float = 0.40,
+) -> dict[str, Any]:
     root = root.resolve()
     skills: list[dict[str, Any]] = []
     parse_errors: list[dict[str, Any]] = []
@@ -74,6 +103,7 @@ def detect_collisions(root: Path, jaccard_threshold: float = 0.55) -> dict[str, 
 
     for i, a in enumerate(skills):
         for b in skills[i + 1 :]:
+            # Full description overlap
             da = _tokens(str(a.get("description", "")))
             db = _tokens(str(b.get("description", "")))
             score = _jaccard(da, db)
@@ -83,6 +113,18 @@ def detect_collisions(root: Path, jaccard_threshold: float = 0.55) -> dict[str, 
                     "a": a["_dir"],
                     "b": b["_dir"],
                     "detail": f"Jaccard={score:.2f}",
+                })
+
+            # Trigger-phrase overlap (activation language)
+            ta = _tokens(_extract_triggers(str(a.get("description", ""))))
+            tb = _tokens(_extract_triggers(str(b.get("description", ""))))
+            tscore = _jaccard(ta, tb)
+            if tscore >= trigger_threshold and ta and tb:
+                collisions.append({
+                    "type": "trigger-overlap",
+                    "a": a["_dir"],
+                    "b": b["_dir"],
+                    "detail": f"Trigger Jaccard={tscore:.2f}",
                 })
 
     return {"scanned": len(skills), "collisions": collisions, "parse_errors": parse_errors}
