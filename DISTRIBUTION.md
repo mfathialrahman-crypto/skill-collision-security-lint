@@ -13,7 +13,7 @@ The higher-leverage problems are narrower:
 I shipped two independent tools only:
 
 skill-lint  — frontmatter + dangerous-pattern checks
-skill-collision — exact name + Jaccard description overlap
+skill-collision — exact name + Jaccard description + trigger-phrase overlap
 
 Baseline (n=6): lint TP 100% / FP 0%, planted collision recall 100%.
 
@@ -35,7 +35,7 @@ Agent Skills are proliferating. Two practical problems keep appearing:
 This repo contains only those two tools. No full creation loop, no framework lock-in.
 
 - skill-lint: name format, description length/forbidden tokens, eval/exec/rm-rf/curl|sh patterns
-- skill-collision: exact-name + Jaccard ≥ 0.55 on description tokens
+- skill-collision: exact-name + Jaccard ≥ 0.55 on description tokens + trigger-phrase overlap
 
 Public baseline report (n=6 fixtures): https://github.com/mfathialrahman-crypto/skill-collision-security-lint/blob/main/docs/benchmark-v0.1.md
 
