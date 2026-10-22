@@ -32,3 +32,22 @@ def test_exact_name_collision(tmp_path: Path):
     result = detect_collisions(tmp_path)
     assert result["scanned"] == 2
     assert any(c["type"] == "exact-name" for c in result["collisions"])
+
+
+def test_trigger_overlap_detected():
+    """Skills with low overall description Jaccard but high trigger-phrase overlap are reported."""
+    from skill_collision.detector import detect_collisions
+    report = detect_collisions(Path("tests/fixtures"))
+    trigger_hits = [
+        c for c in report["collisions"]
+        if c["type"] == "trigger-overlap"
+        and {c["a"], c["b"]} == {"trigger-overlap-a", "trigger-overlap-b"}
+    ]
+    assert trigger_hits, "Expected trigger-overlap between the planted pair"
+    # Ensure the full-description check did not also fire for this pair
+    desc_hits = [
+        c for c in report["collisions"]
+        if c["type"] == "description-overlap"
+        and {c["a"], c["b"]} == {"trigger-overlap-a", "trigger-overlap-b"}
+    ]
+    assert not desc_hits, "Full description Jaccard should stay below threshold for this pair"
