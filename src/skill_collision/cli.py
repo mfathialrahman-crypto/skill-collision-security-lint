@@ -12,7 +12,7 @@ from .detector import detect_collisions
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Detect name/description collisions among skills")
+    parser = argparse.ArgumentParser(description="Detect name, description, and trigger-phrase collisions among skills")
     parser.add_argument("--local", type=Path, required=True, help="Directory containing skill folders")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
