@@ -46,3 +46,8 @@ PYTHONPATH=src pytest tests/ -q
 skill-collision --local tests/fixtures
 skill-lint tests/fixtures
 ```
+
+## Trigger Overlap (added 2026-10-22)
+
+New detection for activation-language overlap even when full-description Jaccard is below threshold.
+Planted pair `trigger-overlap-a` / `trigger-overlap-b`: full Jaccard ~0.44 (not reported), trigger Jaccard 0.80 (reported).
