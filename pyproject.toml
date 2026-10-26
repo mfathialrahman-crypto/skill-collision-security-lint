@@ -1,11 +1,23 @@
 [project]
 name = "skill-collision-security-lint"
-version = "0.1.1"
-description = "Independent Collision Detector + Security Lint for Agent Skills"
+version = "0.1.2"
+description = "Independent Collision Detector + Security Lint for Agent Skills. Detects name/description/trigger collisions and lints SKILL.md for security and frontmatter quality."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
-authors = [{name = "mfathialrahman-crypto"}]
+authors = [{name = "Mohamed Fathi Alrahman", email = "m.fathi.alrahman@gmail.com"}]
+keywords = ["agent-skills", "skill-lint", "collision-detection", "security-lint", "frontmatter", "fathimind"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Security",
+]
 dependencies = [
     "pyyaml>=6.0",
     "rich>=13.0",
@@ -13,6 +25,11 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/mfathialrahman-crypto/skill-collision-security-lint"
+Repository = "https://github.com/mfathialrahman-crypto/skill-collision-security-lint"
+"Bug Tracker" = "https://github.com/mfathialrahman-crypto/skill-collision-security-lint/issues"
 
 [project.scripts]
 skill-lint = "skill_lint.cli:main"
