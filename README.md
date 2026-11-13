@@ -37,12 +37,20 @@ The Project Engineering Constitution that governs continuous improvement lives i
 
 - [x] Repository scaffold
 - [x] Collision Detector v0.1.1 (exact name + Jaccard description + trigger-phrase overlap)
-- [x] Security Lint v0.1.1 (name/description rules + expanded dangerous patterns: eval/exec/subprocess/rm/curl|sh/pickle/unsafe-yaml/base64)
+- [x] Security Lint v0.1.2 (v0.1.1 patterns, plus secrets, exfil hosts, prompt-injection overrides, os.popen, wget|sh, chmod 777, and a per-call yaml.load check that a later SafeLoader cannot mask)
 - [x] Regression tests + CI (3.10–3.12)
 - [x] Benchmark suite (n=6 fixtures)
 - [x] Public before/after report → [docs/benchmark-v0.1.md](docs/benchmark-v0.1.md)
 
 **Baseline metrics (v0.1):** Lint true-positive 100%, false-positive 0%. Collision recall on planted pair 100%.
+
+## What v0.1.2 catches
+
+Static checks, not a semantic proof. A later `yaml.safe_load` no longer hides an earlier `yaml.load`. Live tokens (`ghp_`, `github_pat_`, `sk-`, `xai-`, `AKIA`, private-key blocks, hardcoded assignments of 12+ characters) fail the lint. So do prompt-injection overrides, `requests.post/put/patch`, and known exfil hosts. Placeholders shorter than the length floor, such as `ghp_REDACTED`, stay clean.
+
+## Private review
+
+The tools stay free. A commissioned review of a private skill pack — secrets, exfiltration, and collisions against your own set — is an issue on this repository titled `review:`. No subscription.
 
 ## License
 
